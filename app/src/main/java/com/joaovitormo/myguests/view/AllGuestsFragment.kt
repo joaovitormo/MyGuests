@@ -1,4 +1,4 @@
-package com.joaovitormo.myguests.ui
+package com.joaovitormo.myguests.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.joaovitormo.myguests.databinding.FragmentAllGuestsBinding
+import com.joaovitormo.myguests.view.viewmodel.AllGuestsViewModel
 
 class AllGuestsFragment : Fragment() {
 

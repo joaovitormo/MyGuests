@@ -1,4 +1,4 @@
-package com.joaovitormo.myguests.ui
+package com.joaovitormo.myguests.view.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

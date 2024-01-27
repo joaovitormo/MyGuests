@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_all_guests"
-        android:name="com.joaovitormo.myguests.ui.AllGuestsFragment"
+        android:name="com.joaovitormo.myguests.view.AllGuestsFragment"
         android:label="Todos os Convidados"
         tools:layout="@layout/fragment_all_guests" />
 
     <fragment
         android:id="@+id/nav_present"
-        android:name="com.joaovitormo.myguests.ui.PresentFragment"
+        android:name="com.joaovitormo.myguests.view.PresentFragment"
         android:label="Presentes"
         tools:layout="@layout/fragment_present" />
 
     <fragment
         android:id="@+id/nav_absent"
-        android:name="com.joaovitormo.myguests.ui.AbsentFragment"
+        android:name="com.joaovitormo.myguests.view.AbsentFragment"
         android:label="Ausentes"
         tools:layout="@layout/fragment_absent" />
 </navigation>
