@@ -1,4 +1,4 @@
-package com.joaovitormo.myguests
+package com.joaovitormo.myguests.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +10,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.joaovitormo.myguests.R
 import com.joaovitormo.myguests.databinding.ActivityMainBinding
-import com.joaovitormo.myguests.view.GuestFormActivity
 
 class MainActivity : AppCompatActivity() {
 

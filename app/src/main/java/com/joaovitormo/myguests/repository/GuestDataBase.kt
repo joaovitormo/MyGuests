@@ -4,9 +4,9 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.Build.VERSION
+import com.joaovitormo.myguests.constants.DataBaseConstants
 
-class GuestDataBase(context: Context, name: String, factory: SQLiteDatabase.CursorFactory?, version: Int
-) : SQLiteOpenHelper(context, NAME, factory, VERSION) {
+class GuestDataBase(context: Context) : SQLiteOpenHelper(context, NAME, null, VERSION) {
 
     companion object {
         private const val  NAME = "guestdb"
@@ -15,7 +15,10 @@ class GuestDataBase(context: Context, name: String, factory: SQLiteDatabase.Curs
 
     override fun onCreate(db: SQLiteDatabase) {
         // Criação do banco
-        db.execSQL("create table Guest (id integer primary key autoincrement, name text, presence integer);")
+        db.execSQL("create table "+ DataBaseConstants.GUEST.TABLE_NAME +" " +
+                "("+ DataBaseConstants.COLUMNS.ID+" integer primary key autoincrement, " +
+                ""+ DataBaseConstants.COLUMNS.NAME+" text, " +
+                ""+ DataBaseConstants.COLUMNS.PRESENCE+" integer);")
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
