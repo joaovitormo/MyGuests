@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.joaovitormo.myguests.databinding.FragmentAllGuestsBinding
 import com.joaovitormo.myguests.view.adapter.GuestsAdapter
+import com.joaovitormo.myguests.view.listener.OnGuestListener
 import com.joaovitormo.myguests.view.viewmodel.AllGuestsViewModel
 
 class AllGuestsFragment : Fragment() {
@@ -35,6 +36,20 @@ class AllGuestsFragment : Fragment() {
         binding.recyclerAllGuests.layoutManager =LinearLayoutManager(context)
         //Adapter
         binding.recyclerAllGuests.adapter= adapter
+
+        val listener = object : OnGuestListener {
+            override fun onClick(id: Int) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDelete(id: Int) {
+                viewModel.delete(id)
+                viewModel.getAll()
+            }
+
+        }
+
+        adapter.attachListener(listener)
 
         viewModel.getAll()
         observe()
