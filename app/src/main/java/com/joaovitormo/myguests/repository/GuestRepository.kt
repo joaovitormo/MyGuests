@@ -10,6 +10,7 @@ import java.lang.Exception
 class GuestRepository private constructor(context: Context) {
 
     private val guestDataBase = GuestDataBase(context)
+
     //Singleton - Acesso as intancias da nossa classe - controlar o nº de instancias
     companion object {
         private lateinit var repository: GuestRepository
@@ -23,9 +24,9 @@ class GuestRepository private constructor(context: Context) {
 
     }
 
-    fun insert(guest: GuestModel) : Boolean{
+    fun insert(guest: GuestModel): Boolean {
         return try {
-            val presence = if(guest.presence) 1 else 0
+            val presence = if (guest.presence) 1 else 0
 
             val db = guestDataBase.writableDatabase
             val values = ContentValues()
@@ -40,11 +41,11 @@ class GuestRepository private constructor(context: Context) {
 
     }
 
-    fun update(guest: GuestModel): Boolean{
+    fun update(guest: GuestModel): Boolean {
         return try {
             val db = guestDataBase.writableDatabase
 
-            val presence = if(guest.presence) 1 else 0
+            val presence = if (guest.presence) 1 else 0
             val values = ContentValues()
             values.put(DataBaseConstants.COLUMNS.NAME, guest.name)
             values.put(DataBaseConstants.COLUMNS.PRESENCE, presence)
@@ -53,13 +54,13 @@ class GuestRepository private constructor(context: Context) {
 
             db.update(DataBaseConstants.GUEST.TABLE_NAME, values, selection, args)
             true
-        } catch (e: Exception){
+        } catch (e: Exception) {
             false
         }
 
     }
 
-    fun delete(id: Int): Boolean{
+    fun delete(id: Int): Boolean {
         return try {
             val db = guestDataBase.writableDatabase
 
@@ -69,12 +70,12 @@ class GuestRepository private constructor(context: Context) {
 
             db.delete(DataBaseConstants.GUEST.TABLE_NAME, selection, args)
             true
-        } catch (e: Exception){
+        } catch (e: Exception) {
             false
         }
     }
 
-    fun getAll() : List<GuestModel>{
+    fun getAll(): List<GuestModel> {
         val list = mutableListOf<GuestModel>()
         try {
             val db = guestDataBase.readableDatabase
@@ -83,13 +84,23 @@ class GuestRepository private constructor(context: Context) {
                 DataBaseConstants.COLUMNS.NAME,
                 DataBaseConstants.COLUMNS.PRESENCE
             )
-            val cursor = db.query(DataBaseConstants.GUEST.TABLE_NAME, projection, null, null, null, null, null)
+            val cursor = db.query(
+                DataBaseConstants.GUEST.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+            )
 
             if (cursor != null && cursor.count > 0) {
                 while (cursor.moveToNext()) {
                     val id = cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.ID))
-                    val name = cursor.getString(cursor.getColumnIndex(DataBaseConstants.COLUMNS.NAME))
-                    val presence = cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.PRESENCE))
+                    val name =
+                        cursor.getString(cursor.getColumnIndex(DataBaseConstants.COLUMNS.NAME))
+                    val presence =
+                        cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.PRESENCE))
 
 
                     list.add(GuestModel(id, name, presence == 1))
@@ -97,12 +108,59 @@ class GuestRepository private constructor(context: Context) {
             }
             cursor.close()
 
-        } catch (e: Exception){
+        } catch (e: Exception) {
             return list
         }
         return list
     }
-    fun getPresence() : List<GuestModel>{
+
+    fun get(id: Int): GuestModel? {
+
+        var guest: GuestModel? = null
+        return try {
+            val db = guestDataBase.readableDatabase
+
+            // Colunas que serão retornadas
+            val projection = arrayOf(
+                DataBaseConstants.COLUMNS.ID,
+                DataBaseConstants.COLUMNS.NAME,
+                DataBaseConstants.COLUMNS.PRESENCE
+            )
+
+            // Filtro
+            val selection = DataBaseConstants.COLUMNS.ID + " = ?"
+            val args = arrayOf(id.toString())
+
+            val cursor = db.query(
+                DataBaseConstants.GUEST.TABLE_NAME,
+                projection,
+                selection,
+                args,
+                null,
+                null,
+                null
+            )
+
+            // Verifica se existem dados no cursor
+            if (cursor != null && cursor.count > 0) {
+                cursor.moveToFirst()
+
+                val name =
+                    cursor.getString(cursor.getColumnIndex(DataBaseConstants.COLUMNS.NAME))
+                val presence =
+                    (cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.PRESENCE)) == 1)
+
+                guest = GuestModel(id, name, presence)
+            }
+
+            cursor?.close()
+            guest
+        } catch (e: Exception) {
+            guest
+        }
+    }
+
+    fun getPresence(): List<GuestModel> {
         val list = mutableListOf<GuestModel>()
         try {
             val db = guestDataBase.readableDatabase
@@ -112,8 +170,10 @@ class GuestRepository private constructor(context: Context) {
             if (cursor != null && cursor.count > 0) {
                 while (cursor.moveToNext()) {
                     val id = cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.ID))
-                    val name = cursor.getString(cursor.getColumnIndex(DataBaseConstants.COLUMNS.NAME))
-                    val presence = cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.PRESENCE))
+                    val name =
+                        cursor.getString(cursor.getColumnIndex(DataBaseConstants.COLUMNS.NAME))
+                    val presence =
+                        cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.PRESENCE))
 
 
                     list.add(GuestModel(id, name, presence == 1))
@@ -121,12 +181,13 @@ class GuestRepository private constructor(context: Context) {
             }
             cursor.close()
 
-        } catch (e: Exception){
+        } catch (e: Exception) {
             return list
         }
         return list
     }
-    fun getAbsent() : List<GuestModel>{
+
+    fun getAbsent(): List<GuestModel> {
         val list = mutableListOf<GuestModel>()
         try {
             val db = guestDataBase.readableDatabase
@@ -136,8 +197,10 @@ class GuestRepository private constructor(context: Context) {
             if (cursor != null && cursor.count > 0) {
                 while (cursor.moveToNext()) {
                     val id = cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.ID))
-                    val name = cursor.getString(cursor.getColumnIndex(DataBaseConstants.COLUMNS.NAME))
-                    val presence = cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.PRESENCE))
+                    val name =
+                        cursor.getString(cursor.getColumnIndex(DataBaseConstants.COLUMNS.NAME))
+                    val presence =
+                        cursor.getInt(cursor.getColumnIndex(DataBaseConstants.COLUMNS.PRESENCE))
 
 
                     list.add(GuestModel(id, name, presence == 1))
@@ -145,7 +208,7 @@ class GuestRepository private constructor(context: Context) {
             }
             cursor.close()
 
-        } catch (e: Exception){
+        } catch (e: Exception) {
             return list
         }
         return list

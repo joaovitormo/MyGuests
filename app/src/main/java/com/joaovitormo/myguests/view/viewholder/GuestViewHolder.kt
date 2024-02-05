@@ -24,7 +24,7 @@ class GuestViewHolder(private val bind: RowGuestBinding, private val listener: O
                 .setNegativeButton("Não", null)
                 .create()
                 .show()
-        listener.onDelete(guest.id)
+
         true
         }
     }
