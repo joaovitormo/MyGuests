@@ -34,7 +34,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun observe(){
+    private fun observe() {
         viewModel.guest.observe(this) {
             binding.editName.setText(it.name)
             if (it.presence) {
@@ -44,8 +44,8 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        viewModel.saveGuest.observe(this){
-            if(it !=""){
+        viewModel.saveGuest.observe(this) {
+            if (it != "") {
                 Toast.makeText(applicationContext, it, Toast.LENGTH_LONG).show()
                 finish()
             } else {
@@ -53,12 +53,17 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
     override fun onClick(v: View) {
         if (v.id == R.id.button_save) {
             val name = binding.editName.text.toString()
             val presence = binding.radioPresent.isChecked
 
-            val model = GuestModel(guestId,name, presence)
+            val model = GuestModel().apply {
+                this.id = guestId
+                this.name = name
+                this.presence = presence
+            }
             viewModel.save(model)
 
         }
