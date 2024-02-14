@@ -5,16 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.joaovitormo.myguests.constants.DataBaseConstants
 import com.joaovitormo.myguests.databinding.FragmentAllGuestsBinding
 import com.joaovitormo.myguests.view.adapter.GuestsAdapter
 import com.joaovitormo.myguests.view.listener.OnGuestListener
-import com.joaovitormo.myguests.view.viewmodel.AllGuestsViewModel
+import com.joaovitormo.myguests.view.viewmodel.GuestsViewModel
 
 class AllGuestsFragment : Fragment() {
 
@@ -22,7 +20,7 @@ class AllGuestsFragment : Fragment() {
 
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: AllGuestsViewModel
+    private lateinit var viewModel: GuestsViewModel
 
     private val adapter = GuestsAdapter()
 
@@ -30,7 +28,7 @@ class AllGuestsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, b: Bundle?
     ): View {
         viewModel =
-            ViewModelProvider(this).get(AllGuestsViewModel::class.java)
+            ViewModelProvider(this).get(GuestsViewModel::class.java)
 
         _binding = FragmentAllGuestsBinding.inflate(inflater, container, false)
 
@@ -59,17 +57,23 @@ class AllGuestsFragment : Fragment() {
 
         adapter.attachListener(listener)
 
-        viewModel.getAll()
+
         observe()
 
         return binding.root
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAll()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
     private fun observe() {
         viewModel.guests.observe(viewLifecycleOwner) {

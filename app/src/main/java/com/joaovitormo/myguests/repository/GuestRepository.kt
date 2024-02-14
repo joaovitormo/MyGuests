@@ -160,7 +160,7 @@ class GuestRepository private constructor(context: Context) {
         }
     }
 
-    fun getPresence(): List<GuestModel> {
+    fun getPresent(): List<GuestModel> {
         val list = mutableListOf<GuestModel>()
         try {
             val db = guestDataBase.readableDatabase
